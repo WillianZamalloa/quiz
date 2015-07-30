@@ -18,6 +18,7 @@ exports.load = function(req, res, next, quizId){
 exports.index = function(req, res){
 	//models.Quiz.findAll({where:["question LIKE ?", search], order:"question"}).then(.....)
 	if (req.query.search) {
+
 		models.Quiz.findAll({where:{ pregunta : {$like : '%'+req.query.search+'%'}}, order:"pregunta"}).then(
 			function(quizes){
 				res.render('quizes/index.ejs', {quizes: quizes});
@@ -63,4 +64,23 @@ exports.answer = function(req, res){
 		resultado = 'Correcto';
 	}
 	res.render('quizes/answer',	{ quiz: req.quiz, respuesta: resultado});
+};
+
+//GET /quizes/new
+exports.new = function(req, res){
+	var quiz = models.Quiz.build( //crea un objeto quiz
+		{pregunta: "Pregunta", respuesta: "Respuesta"}
+	);
+
+	res.render('quizes/new', {quiz: quiz});
+};
+
+//GET /quizes/create
+exports.create = function(req, res){
+	var quiz = models.Quiz.build( req.body.quiz );
+
+	//guarda en BD los campos pregunta y respuesta de quiz
+	quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+		res.redirect("/quizes")
+	}) //Redireccion HTTP (URL relativo) lista de preguntas
 };
