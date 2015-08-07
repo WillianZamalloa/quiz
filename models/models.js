@@ -40,10 +40,12 @@ sequelize.sync().then(function(){
   Quiz.count().then(function(count){
     if (count == 0) {//la tabla se inicializa solo si esta vacia
       Quiz.create({ pregunta: 'Capital de Roma',
-                    respuesta: 'Roma'
+                    respuesta: 'Roma',
+                    tema: 'humanidades'
                   }); //.success(function(){console.log('Base de Datos Inicializada');})
       Quiz.create({ pregunta: 'Capital de Portugal',
-                    respuesta: 'Lisboa'
+                    respuesta: 'Lisboa',
+                    tema: 'humanidades'
                   })
       .then(function(){console.log('Base de Datos Inicializada');})
     };
